@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-locatecontrol/0.76.0/L.Control.Locate.min.js"></script>
+   
+   
+   <style>
+      #map {position: absolute; top: 0; right: 0; bottom: 0; left: 0;}
+    </style>
+    <title>Klik Kaart Ding</title>
+  </head>
+  <body>
+    <div id="map">
+    </div>>
+    <script>
+      var map = L.map('map').setView([53.21165, 5.7986], 1);
+      L.tileLayer('https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=dBmIjb5Q1x8j5vlIopNv',{
+        tileSize: 512,
+        zoomOffset: -1,
+        minZoom: 12,
+        crossOrigin: true
+      }).addTo(map);
+
+    var homerIcon = L.icon({
+    iconUrl: 'Homer_Simpson_2006.png',
+
+    iconSize:     [38, 95], // size of the icon
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+
+    var donut = L.icon({
+    iconUrl: 'donut.png',
+
+    iconSize: [40,40]
+    });
+
+      var marker = L.marker([53.21165, 5.7986], {icon: homerIcon}
+      ).addTo(map);
+
+      map.panTo(new L.LatLng(53.21165, 5.7986));
+
+      var marker2 = L.marker([53.19670,5.79233], {icon:donut}
+      ).addTo(map);
+
+      var popup = marker.bindPopup('<b>Mmmmm Donuts</b>');
+
+      var popup = marker2.bindPopup('<b>I am a motherforking donut</b>');
+
+      var Locate = L.control.locate().addTo(map);
+
+      function onLocationFound(e) {
+        var radius = e.accuracy / 2;
+
+        L.marker(e.latlng).addTo(map)
+            .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+        L.circle(e.latlng, radius).addTo(map);
+    }
+
+    function onLocationError(e) {
+        alert(e.message);
+    }
+
+    map.on('locationfound', onLocationFound);
+    map.on('locationerror', onLocationError);
+
+    
+
+      
+     </script>
+  </body>
+</html>
